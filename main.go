@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"goleetcode/questions"
 	"log"
+	"reflect"
 
 	track "github.com/OscarZhou/gotrack"
 )
@@ -56,7 +57,21 @@ func main() {
 		fmt.Println("------------------------------------")
 		questions := registerQuestions(nil)
 		for k := range questions {
-			fmt.Println(k)
+			ptr := reflect.New(reflect.TypeOf(questions[k]).Elem())
+			methodInit := ptr.MethodByName("Init")
+			if !methodInit.IsValid() {
+				info := fmt.Sprintf("%s fails to Init", k)
+				log.Fatal(info)
+			}
+			args := make([]reflect.Value, 0)
+			methodInit.Call(args)
+			methodPrintTitle := ptr.MethodByName("PrintTitle")
+			if !methodInit.IsValid() {
+				info := fmt.Sprintf("%s fails to PrintTitle", k)
+				log.Fatal(info)
+			}
+			methodPrintTitle.Call(args)
+
 		}
 		fmt.Println("------------------------------------")
 		return
@@ -92,5 +107,6 @@ func main() {
 func registerQuestions(t *track.Track) map[QuestionName]questions.Questioner {
 	q := make(map[QuestionName]questions.Questioner)
 	q[QuestionJewelsAndStones] = &questions.JewelAndStone{Track: t}
+
 	return q
 }

@@ -38,6 +38,10 @@ func (q JewelAndStone) Print() {
 
 }
 
+func (q JewelAndStone) PrintTitle() {
+	fmt.Printf("%d, %s\n", q.No, q.Title)
+}
+
 func (q JewelAndStone) Run() error {
 	return nil
 }

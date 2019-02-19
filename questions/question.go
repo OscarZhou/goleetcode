@@ -16,6 +16,7 @@ const (
 type Questioner interface {
 	Init()
 	Print()
+	PrintTitle()
 	Run() error
 	// Output()
 	// Log()
@@ -35,6 +36,10 @@ func (Question) Init() {
 }
 
 func (Question) Print() {
+	fmt.Println("no contents")
+}
+
+func (Question) PrintTitle() {
 	fmt.Println("no contents")
 }
 

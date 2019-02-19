@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"goleetcode/questions"
 	"log"
-	"reflect"
 
 	track "github.com/OscarZhou/gotrack"
 )
@@ -57,20 +56,22 @@ func main() {
 		fmt.Println("------------------------------------")
 		questions := registerQuestions(nil)
 		for k := range questions {
-			ptr := reflect.New(reflect.TypeOf(questions[k]).Elem())
-			methodInit := ptr.MethodByName("Init")
-			if !methodInit.IsValid() {
-				info := fmt.Sprintf("%s fails to Init", k)
-				log.Fatal(info)
-			}
-			args := make([]reflect.Value, 0)
-			methodInit.Call(args)
-			methodPrintTitle := ptr.MethodByName("PrintTitle")
-			if !methodInit.IsValid() {
-				info := fmt.Sprintf("%s fails to PrintTitle", k)
-				log.Fatal(info)
-			}
-			methodPrintTitle.Call(args)
+			questions[k].Init()
+			questions[k].PrintTitle()
+			// ptr := reflect.New(reflect.TypeOf(questions[k]).Elem())
+			// methodInit := ptr.MethodByName("Init")
+			// if !methodInit.IsValid() {
+			// 	info := fmt.Sprintf("%s fails to Init", k)
+			// 	log.Fatal(info)
+			// }
+			// args := make([]reflect.Value, 0)
+			// methodInit.Call(args)
+			// methodPrintTitle := ptr.MethodByName("PrintTitle")
+			// if !methodInit.IsValid() {
+			// 	info := fmt.Sprintf("%s fails to PrintTitle", k)
+			// 	log.Fatal(info)
+			// }
+			// methodPrintTitle.Call(args)
 
 		}
 		fmt.Println("------------------------------------")
@@ -89,9 +90,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	questions := registerQuestions(t)
+	q := registerQuestions(t)
+	for k := range q {
+		q[k].Init()
+	}
 	if param.Question != "" {
-		target, ok := questions[QuestionName(param.Question)]
+		target, ok := questions.TitleMap[param.Question]
 		if !ok {
 			log.Fatal("Illegal question name")
 		}
@@ -100,7 +104,13 @@ func main() {
 	}
 
 	if param.Number != 0 {
+		fmt.Println(questions.NumberMap)
+		target, ok := questions.NumberMap[param.Number]
+		if !ok {
+			log.Fatal("Illegal question number")
+		}
 
+		target.Print()
 	}
 }
 

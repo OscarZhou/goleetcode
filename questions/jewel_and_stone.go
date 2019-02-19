@@ -18,6 +18,8 @@ func (q *JewelAndStone) Init() {
 	q.URL = "https://leetcode.com/problems/jewels-and-stones/"
 	q.Level = LevelEasy
 	q.FuncName = "numJewelsInStones"
+	NumberMap[q.No] = q
+	TitleMap[q.Title] = q
 }
 
 func (q JewelAndStone) Print() {

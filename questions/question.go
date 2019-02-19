@@ -1,29 +1,51 @@
 package questions
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
+
+type LevelType string
+
+const (
+	LevelEasy   LevelType = "Easy"
+	LevelMedium LevelType = "Medium"
+	LevelHard   LevelType = "Hard"
+)
 
 type Questioner interface {
+	Init()
 	Print()
-	Output()
-	Log()
+	Run() error
+	// Output()
+	// Log()
 }
 
 // Question records the basic information of the question
 type Question struct {
-	No          int
-	Name        string
-	Description string
-	URL         string
+	No        int
+	Title     string
+	FullTitle string
+	URL       string
+	Level     LevelType
+	FuncName  string
 }
 
-func (Question) Print() error {
+func (Question) Init() {
+}
+
+func (Question) Print() {
+	fmt.Println("no contents")
+}
+
+func (Question) Run() error {
 	return errors.New("method is not allowed")
 }
 
-func (Question) Output() error {
-	return errors.New("method is not allowed")
-}
+// func (Question) Output() error {
+// 	return errors.New("method is not allowed")
+// }
 
-func (Question) Log() error {
-	return errors.New("method is not allowed")
-}
+// func (Question) Log() error {
+// 	return errors.New("method is not allowed")
+// }

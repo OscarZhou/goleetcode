@@ -11,10 +11,14 @@ import (
 
 type QuestionName string
 
-const ()
+const (
+	QuestionJewelsAndStones QuestionName = "Jewels and Stones"
+)
 
 // Param is the collection of all avaiable parameters
 type Param struct {
+	Number     int
+	NumberDesp string
 	// Question Specific question on leet code
 	Question string
 	// OperationDesp Description for the field Question
@@ -27,6 +31,8 @@ type Param struct {
 
 var (
 	param = Param{
+		Number:       0,
+		NumberDesp:   "The question number that you want to check",
 		Question:     "",
 		QuestionDesp: "The question that you want to check",
 		Debug:        true,
@@ -36,8 +42,10 @@ var (
 
 func main() {
 	// Parse the flags
-	flag.StringVar(&(param.Question), "", param.Question, param.QuestionDesp)
-	flag.StringVar(&(param.Question), "o", param.QuestionDesp, param.QuestionDesp+" (shorthand)")
+	flag.IntVar(&(param.Number), "number", param.Number, param.NumberDesp)
+	flag.IntVar(&(param.Number), "n", param.Number, param.NumberDesp+" (shorthand)")
+	flag.StringVar(&(param.Question), "question", param.Question, param.QuestionDesp)
+	flag.StringVar(&(param.Question), "q", param.Question, param.QuestionDesp+" (shorthand)")
 	flag.BoolVar(&(param.Debug), "debug", param.Debug, param.DebugDesp)
 	flag.BoolVar(&(param.Debug), "dbg", param.Debug, param.DebugDesp+" (shorthand)")
 	flag.Parse()
@@ -46,10 +54,15 @@ func main() {
 	case "list", "ls":
 		fmt.Println("\nQuestion List:")
 		fmt.Println("------------------------------------")
-
+		questions := registerQuestions(nil)
+		for k := range questions {
+			fmt.Println(k)
+		}
 		fmt.Println("------------------------------------")
+		return
 	case "version", "v":
 		fmt.Println("goleetcode:0.1.1")
+		return
 	}
 
 	t, err := track.New(track.Config{
@@ -70,9 +83,14 @@ func main() {
 
 		target.Print()
 	}
+
+	if param.Number != 0 {
+
+	}
 }
 
 func registerQuestions(t *track.Track) map[QuestionName]questions.Questioner {
 	q := make(map[QuestionName]questions.Questioner)
+	q[QuestionJewelsAndStones] = &questions.JewelAndStone{Track: t}
 	return q
 }

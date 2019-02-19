@@ -1,5 +1,7 @@
 package questions
 
+import "errors"
+
 type Questioner interface {
 	Print()
 	Output()
@@ -11,4 +13,17 @@ type Question struct {
 	No          int
 	Name        string
 	Description string
+	URL         string
+}
+
+func (Question) Print() error {
+	return errors.New("method is not allowed")
+}
+
+func (Question) Output() error {
+	return errors.New("method is not allowed")
+}
+
+func (Question) Log() error {
+	return errors.New("method is not allowed")
 }

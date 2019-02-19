@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"goleetcode/questions"
 	"log"
 
 	track "github.com/OscarZhou/gotrack"
@@ -51,7 +52,7 @@ func main() {
 		fmt.Println("goleetcode:0.1.1")
 	}
 
-	_, err := track.New(track.Config{
+	t, err := track.New(track.Config{
 		Debug:   true,
 		AsynLog: false,
 	})
@@ -60,4 +61,18 @@ func main() {
 		log.Fatal(err)
 	}
 
+	questions := registerQuestions(t)
+	if param.Question != "" {
+		target, ok := questions[QuestionName(param.Question)]
+		if !ok {
+			log.Fatal("Illegal question name")
+		}
+
+		target.Print()
+	}
+}
+
+func registerQuestions(t *track.Track) map[QuestionName]questions.Questioner {
+	q := make(map[QuestionName]questions.Questioner)
+	return q
 }

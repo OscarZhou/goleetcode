@@ -44,7 +44,24 @@ func (q JewelAndStone) PrintTitle() {
 	fmt.Printf("%d, %s\n", q.No, q.Title)
 }
 
+func (q JewelAndStone) PrintDetail() {
+	fmt.Printf("%d, %s\n", q.No, q.Title)
+}
+
 func (q JewelAndStone) Run() error {
+	q.Track.Start()
+	defer q.Track.End()
+
+	var (
+		J, S     = "aA", "aAAbbbb"
+		expected = 3
+	)
+
+	actual := numJewelsInStones(J, S)
+	if expected == actual {
+		fmt.Printf("expected=%d, actual=%d\n", expected, actual)
+	}
+
 	return nil
 }
 

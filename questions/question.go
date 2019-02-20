@@ -17,6 +17,7 @@ type Questioner interface {
 	Init()
 	Print()
 	PrintTitle()
+	PrintDetail()
 	Run() error
 	// Output()
 	// Log()
@@ -40,6 +41,10 @@ func (Question) Print() {
 }
 
 func (Question) PrintTitle() {
+	fmt.Println("no contents")
+}
+
+func (Question) PrintDetail() {
 	fmt.Println("no contents")
 }
 

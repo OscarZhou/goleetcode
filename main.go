@@ -13,6 +13,7 @@ type QuestionName string
 
 const (
 	QuestionJewelsAndStones QuestionName = "Jewels and Stones"
+	QuestionValidNumber     QuestionName = "Valid Number"
 )
 
 // Param is the collection of all avaiable parameters
@@ -27,6 +28,8 @@ type Param struct {
 	Debug bool
 	// DebugDesp Description for the field Debug
 	DebugDesp string
+	Run       bool
+	RunDesp   string
 }
 
 var (
@@ -37,6 +40,8 @@ var (
 		QuestionDesp: "The question that you want to check",
 		Debug:        true,
 		DebugDesp:    "Display the debug information",
+		Run:          true,
+		RunDesp:      "Run the test case",
 	}
 )
 
@@ -48,6 +53,8 @@ func main() {
 	flag.StringVar(&(param.Question), "q", param.Question, param.QuestionDesp+" (shorthand)")
 	flag.BoolVar(&(param.Debug), "debug", param.Debug, param.DebugDesp)
 	flag.BoolVar(&(param.Debug), "dbg", param.Debug, param.DebugDesp+" (shorthand)")
+	flag.BoolVar(&(param.Run), "run", param.Debug, param.RunDesp)
+	flag.BoolVar(&(param.Run), "r", param.Debug, param.RunDesp+" (shorthand)")
 	flag.Parse()
 
 	switch flag.Arg(0) {
@@ -94,8 +101,13 @@ func main() {
 	for k := range q {
 		q[k].Init()
 	}
+
+	var (
+		target questions.Questioner
+		ok     bool
+	)
 	if param.Question != "" {
-		target, ok := questions.TitleMap[param.Question]
+		target, ok = questions.TitleMap[param.Question]
 		if !ok {
 			log.Fatal("Illegal question name")
 		}
@@ -105,18 +117,24 @@ func main() {
 
 	if param.Number != 0 {
 		fmt.Println(questions.NumberMap)
-		target, ok := questions.NumberMap[param.Number]
+		target, ok = questions.NumberMap[param.Number]
 		if !ok {
 			log.Fatal("Illegal question number")
 		}
 
 		target.Print()
 	}
+
+	if param.Run {
+		target.Run()
+	}
+
 }
 
 func registerQuestions(t *track.Track) map[QuestionName]questions.Questioner {
 	q := make(map[QuestionName]questions.Questioner)
 	q[QuestionJewelsAndStones] = &questions.JewelAndStone{Track: t}
+	q[QuestionValidNumber] = &questions.ValidNumber{Track: t}
 
 	return q
 }

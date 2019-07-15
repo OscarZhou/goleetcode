@@ -37,7 +37,6 @@ func (e ValidNumber) Print() {
 				if state == 0 {
 					state = 1
 					i++
-					continue
 				} else if state == 5 {
 					state = 7
 					i++
@@ -45,30 +44,37 @@ func (e ValidNumber) Print() {
 					return false
 				}
 			case 'e':
-				if state == 2 || state == 4 {
+				if state == 2 || state == 3 || state == 4 || state == 9 {
 					state = 5
 					i++
 				} else {
 					return false
 				}
 			case '.':
-				if state == 2 {
+				if state == 0 || state == 1 {
+					state = 8
+					i++
+				} else if state == 2 {
 					state = 3
 					i++
 				} else {
 					return false
 				}
 			case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-				if state == 0 || state == 1 || state == 2 {
+				switch state {
+				case 0, 1, 2:
 					state = 2
 					i++
-				} else if state == 3 || state == 4 {
+				case 3, 4:
 					state = 4
 					i++
-				} else if state == 5 || state == 6 || state == 7 {
+				case 5, 6, 7:
 					state = 6
 					i++
-				} else {
+				case 8, 9:
+					state = 9
+					i++
+				default:
 					return false
 				}
 			default:
@@ -76,12 +82,11 @@ func (e ValidNumber) Print() {
 			}
 		}
 	
-		if state == 2 || state == 4 || state == 6 {
+		if state == 2 || state == 3 || state == 4 || state == 6 || state == 9 {
 			return true
 		}
 		return false
 	}
-	
 	`)
 
 }
@@ -113,6 +118,10 @@ func (e ValidNumber) Run() error {
 		" --6",
 		"-+3",
 		"95a54e53",
+		"1.",
+		".3",
+		"40.81",
+		"46.e3",
 	}
 
 	expectedArray := []bool{
@@ -130,6 +139,10 @@ func (e ValidNumber) Run() error {
 		false,
 		false,
 		false,
+		true,
+		true,
+		true,
+		true,
 	}
 
 	for i, v := range sArray {
@@ -160,7 +173,6 @@ func isNumber(s string) bool {
 			if state == 0 {
 				state = 1
 				i++
-				continue
 			} else if state == 5 {
 				state = 7
 				i++
@@ -168,30 +180,37 @@ func isNumber(s string) bool {
 				return false
 			}
 		case 'e':
-			if state == 2 || state == 4 {
+			if state == 2 || state == 3 || state == 4 || state == 9 {
 				state = 5
 				i++
 			} else {
 				return false
 			}
 		case '.':
-			if state == 2 {
+			if state == 0 || state == 1 {
+				state = 8
+				i++
+			} else if state == 2 {
 				state = 3
 				i++
 			} else {
 				return false
 			}
 		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			if state == 0 || state == 1 || state == 2 {
+			switch state {
+			case 0, 1, 2:
 				state = 2
 				i++
-			} else if state == 3 || state == 4 {
+			case 3, 4:
 				state = 4
 				i++
-			} else if state == 5 || state == 6 || state == 7 {
+			case 5, 6, 7:
 				state = 6
 				i++
-			} else {
+			case 8, 9:
+				state = 9
+				i++
+			default:
 				return false
 			}
 		default:
@@ -199,7 +218,7 @@ func isNumber(s string) bool {
 		}
 	}
 
-	if state == 2 || state == 4 || state == 6 {
+	if state == 2 || state == 3 || state == 4 || state == 6 || state == 9 {
 		return true
 	}
 	return false

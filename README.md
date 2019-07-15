@@ -14,3 +14,10 @@ goleetcode -n 771
 goleetcode -dbg "Jewels and Stones"
 
 ```
+
+
+# Sketches
+
+## Valid Number
+
+![65](https://github.com/OscarZhou/goleetcode/master/sketches/leetcode65.jpg)

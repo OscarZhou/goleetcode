@@ -14,6 +14,7 @@ type QuestionName string
 const (
 	QuestionJewelsAndStones QuestionName = "Jewels and Stones"
 	QuestionValidNumber     QuestionName = "Valid Number"
+	QuestionStringtoInteger QuestionName = "String to Integer"
 )
 
 // Param is the collection of all avaiable parameters
@@ -30,6 +31,8 @@ type Param struct {
 	DebugDesp string
 	Run       bool
 	RunDesp   string
+	Print     bool
+	PrintDesp string
 }
 
 var (
@@ -40,8 +43,10 @@ var (
 		QuestionDesp: "The question that you want to check",
 		Debug:        true,
 		DebugDesp:    "Display the debug information",
-		Run:          true,
+		Run:          false,
 		RunDesp:      "Run the test case",
+		Print:        false,
+		PrintDesp:    "Print the sample code",
 	}
 )
 
@@ -53,8 +58,10 @@ func main() {
 	flag.StringVar(&(param.Question), "q", param.Question, param.QuestionDesp+" (shorthand)")
 	flag.BoolVar(&(param.Debug), "debug", param.Debug, param.DebugDesp)
 	flag.BoolVar(&(param.Debug), "dbg", param.Debug, param.DebugDesp+" (shorthand)")
-	flag.BoolVar(&(param.Run), "run", param.Debug, param.RunDesp)
-	flag.BoolVar(&(param.Run), "r", param.Debug, param.RunDesp+" (shorthand)")
+	flag.BoolVar(&(param.Run), "run", param.Run, param.RunDesp)
+	flag.BoolVar(&(param.Run), "r", param.Run, param.RunDesp+" (shorthand)")
+	flag.BoolVar(&(param.Print), "print", param.Print, param.PrintDesp)
+	flag.BoolVar(&(param.Print), "p", param.Print, param.PrintDesp+" (shorthand)")
 	flag.Parse()
 
 	switch flag.Arg(0) {
@@ -112,17 +119,20 @@ func main() {
 			log.Fatal("Illegal question name")
 		}
 
-		target.Print()
+		if param.Print {
+			target.Print()
+		}
 	}
 
 	if param.Number != 0 {
-		fmt.Println(questions.NumberMap)
 		target, ok = questions.NumberMap[param.Number]
 		if !ok {
 			log.Fatal("Illegal question number")
 		}
 
-		target.Print()
+		if param.Print {
+			target.Print()
+		}
 	}
 
 	if param.Run {
@@ -135,6 +145,7 @@ func registerQuestions(t *track.Track) map[QuestionName]questions.Questioner {
 	q := make(map[QuestionName]questions.Questioner)
 	q[QuestionJewelsAndStones] = &questions.JewelAndStone{Track: t}
 	q[QuestionValidNumber] = &questions.ValidNumber{Track: t}
+	q[QuestionStringtoInteger] = &questions.StringToInteger{Track: t}
 
 	return q
 }

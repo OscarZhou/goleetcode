@@ -71,6 +71,8 @@ func (e StringToInteger) Run() error {
 		"0-1",
 		"    0000000000000   ",
 		"-5-",
+		"18446744073709551617",
+		"  0000000000012345678",
 	}
 
 	expectedArray := []int{
@@ -91,6 +93,8 @@ func (e StringToInteger) Run() error {
 		0,
 		0,
 		-5,
+		2147483647,
+		12345678,
 	}
 
 	for i, v := range sArray {
@@ -106,6 +110,7 @@ func (e StringToInteger) Run() error {
 func myAtoi(str string) int {
 	s := strings.TrimLeft(str, " ")
 	i, state, initalNumber, positive := 0, 0, true, true
+	count := 0
 	var result int64 = 0
 
 	var max int64 = 2147483647  // int(math.Pow(2, 31)) - 1
@@ -134,6 +139,7 @@ func myAtoi(str string) int {
 		case '0':
 			if !initalNumber {
 				result = result*10 + castChars[chars[i]]
+				count++
 			}
 			state = 2
 			i++
@@ -147,6 +153,7 @@ func myAtoi(str string) int {
 				} else {
 					result = result*10 + castChars[chars[i]]
 				}
+				count++
 				i++
 			} else {
 				return 0
@@ -159,6 +166,8 @@ func myAtoi(str string) int {
 					positive = false
 				}
 				i++
+			} else if state == 2 {
+				i = len(chars)
 			} else {
 				return 0
 			}
@@ -169,17 +178,12 @@ func myAtoi(str string) int {
 				i = len(chars)
 			}
 		}
+		if count > 10 {
+			break
+		}
 	}
 	if state == 2 {
-		if result > max {
-			if positive {
-				return int(max)
-			} else {
-				return int(min)
-			}
-		}
-
-		if result < min {
+		if result > max || result < min {
 			if positive {
 				return int(max)
 			} else {

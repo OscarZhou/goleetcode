@@ -36,43 +36,53 @@ func (e AddTwoNumbers) Run() error {
 	defer e.Track.End()
 
 	l1 := &ListNode{Val: 3, Next: nil}
-	fmt.Println("~~~", l1.Val)
+	header1 := l1
 	l1.Next = &ListNode{Val: 4, Next: nil}
 	l1 = l1.Next
-	fmt.Println("~~~", l1.Val)
 	l1.Next = &ListNode{Val: 2, Next: nil}
 	l1 = l1.Next
-	fmt.Println("~~~", l1.Val)
+	l1.Next = nil
 
 	l2 := &ListNode{Val: 4, Next: nil}
+	header2 := l2
 	l2.Next = &ListNode{Val: 6, Next: nil}
 	l2 = l2.Next
 	l2.Next = &ListNode{Val: 5, Next: nil}
 	l2 = l2.Next
+	l2.Next = nil
 
 	expect := &ListNode{Val: 8, Next: nil}
+	headerExpect := expect
 	expect.Next = &ListNode{Val: 0, Next: nil}
 	expect = expect.Next
 	expect.Next = &ListNode{Val: 7, Next: nil}
 	expect = expect.Next
+	expect.Next = nil
 
-	actual := addTwoNumbers(l1, l2)
-	if !reflect.DeepEqual(*expect, *actual) {
-		fmt.Printf("expected=%v, actual=%v\n", expect, actual)
+	actual := addTwoNumbers(header1, header2)
+	if !reflect.DeepEqual(*headerExpect, *actual) {
+		fmt.Printf("expected=%v, actual=%v\n", headerExpect, actual)
 	}
 
 	l1 = &ListNode{Val: 1, Next: nil}
+	header1 = l1
 	l1.Next = &ListNode{Val: 8, Next: nil}
 	l1 = l1.Next
+	l1.Next = nil
 
 	l2 = &ListNode{Val: 0, Next: nil}
+	l2.Next = nil
+
+	header2 = l2
 	expect = &ListNode{Val: 1, Next: nil}
+	headerExpect = expect
 	expect.Next = &ListNode{Val: 8, Next: nil}
 	expect = expect.Next
+	expect.Next = nil
 
-	actual = addTwoNumbers(l1, l2)
-	if !reflect.DeepEqual(*expect, *actual) {
-		fmt.Printf("expected=%v, actual=%v\n", expect, actual)
+	actual = addTwoNumbers(header1, header2)
+	if !reflect.DeepEqual(*headerExpect, *actual) {
+		fmt.Printf("expected=%v, actual=%v\n", headerExpect, actual)
 	}
 	return nil
 }
@@ -87,9 +97,9 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	headNode := new(ListNode)
 	headNode = nextNode
 	carry, remainder := 0, 0
+	p := ListNode{Val: 0, Next: nil}
+	q := ListNode{Val: 0, Next: nil}
 	for l1 != nil || l2 != nil {
-		p := ListNode{Val: 0, Next: nil}
-		q := ListNode{Val: 0, Next: nil}
 		if l1 != nil {
 			p = *l1
 		}
@@ -100,20 +110,25 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 
 		remainder = (p.Val + q.Val + carry) % 10
 
-		newNode := &ListNode{
+		newNode := ListNode{
 			Val:  remainder,
 			Next: nil,
 		}
 		if nextNode == nil {
-			nextNode = newNode
-			headNode = newNode
+			nextNode = &newNode
+			headNode = &newNode
 		} else {
-			nextNode.Next = newNode
+			nextNode.Next = &newNode
 		}
 		carry = (p.Val + q.Val + carry) / 10
-		l1 = l1.Next
-		l2 = l2.Next
-		fmt.Println("==", newNode.Val)
+
+		if l1.Next != nil {
+			l1 = l1.Next
+		}
+
+		if l2.Next != nil {
+			l2 = l2.Next
+		}
 	}
 
 	nextNode.Next = nil

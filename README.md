@@ -10,7 +10,7 @@ A practice to the coding question on Leet Code
 go build
 goleetcode v
 goleetcode ls
-goleetcode -n 771
+goleetcode -n 771 -r
 goleetcode -dbg "Jewels and Stones"
 
 ```

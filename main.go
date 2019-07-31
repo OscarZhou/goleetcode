@@ -16,6 +16,7 @@ const (
 	QuestionValidNumber     QuestionName = "Valid Number"
 	QuestionStringtoInteger QuestionName = "String to Integer"
 	QuestionTwoSum          QuestionName = "Two Sum"
+	QuestionAddTwoNumbers   QuestionName = "Add Two Numbers"
 )
 
 // Param is the collection of all avaiable parameters
@@ -34,6 +35,8 @@ type Param struct {
 	RunDesp   string
 	Print     bool
 	PrintDesp string
+	Help      bool
+	HelpDesp  string
 }
 
 var (
@@ -48,6 +51,8 @@ var (
 		RunDesp:      "Run the test case",
 		Print:        false,
 		PrintDesp:    "Print the sample code",
+		Help:         false,
+		HelpDesp:     "Print the commands",
 	}
 )
 
@@ -63,6 +68,8 @@ func main() {
 	flag.BoolVar(&(param.Run), "r", param.Run, param.RunDesp+" (shorthand)")
 	flag.BoolVar(&(param.Print), "print", param.Print, param.PrintDesp)
 	flag.BoolVar(&(param.Print), "p", param.Print, param.PrintDesp+" (shorthand)")
+	flag.BoolVar(&(param.Help), "help", param.Help, param.HelpDesp)
+	flag.BoolVar(&(param.Help), "h", param.Help, param.HelpDesp+" (shorthand)")
 	flag.Parse()
 
 	switch flag.Arg(0) {
@@ -73,26 +80,19 @@ func main() {
 		for k := range questions {
 			questions[k].Init()
 			questions[k].PrintTitle()
-			// ptr := reflect.New(reflect.TypeOf(questions[k]).Elem())
-			// methodInit := ptr.MethodByName("Init")
-			// if !methodInit.IsValid() {
-			// 	info := fmt.Sprintf("%s fails to Init", k)
-			// 	log.Fatal(info)
-			// }
-			// args := make([]reflect.Value, 0)
-			// methodInit.Call(args)
-			// methodPrintTitle := ptr.MethodByName("PrintTitle")
-			// if !methodInit.IsValid() {
-			// 	info := fmt.Sprintf("%s fails to PrintTitle", k)
-			// 	log.Fatal(info)
-			// }
-			// methodPrintTitle.Call(args)
-
 		}
 		fmt.Println("------------------------------------")
 		return
 	case "version", "v":
 		fmt.Println("goleetcode:0.1.1")
+		return
+	case "help", "h":
+		fmt.Println("number, n:\t\t\t\tThe question number that you want to check")
+		fmt.Println("question, q:\t\t\t\tThe question that you want to check")
+		fmt.Println("debug, dbg:\t\t\t\tDisplay the debug information")
+		fmt.Println("run, r:\t\t\t\t\tRun the test case")
+		fmt.Println("print, p:\t\t\t\tPrint the sample code")
+		fmt.Println("help, h:\t\t\t\tPrint the commands")
 		return
 	}
 
@@ -148,6 +148,7 @@ func registerQuestions(t *track.Track) map[QuestionName]questions.Questioner {
 	q[QuestionValidNumber] = &questions.ValidNumber{Track: t}
 	q[QuestionStringtoInteger] = &questions.StringToInteger{Track: t}
 	q[QuestionTwoSum] = &questions.TwoSum{Track: t}
+	q[QuestionAddTwoNumbers] = &questions.AddTwoNumbers{Track: t}
 
 	return q
 }

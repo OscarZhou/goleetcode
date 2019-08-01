@@ -17,6 +17,7 @@ const (
 	QuestionStringtoInteger QuestionName = "String to Integer"
 	QuestionTwoSum          QuestionName = "Two Sum"
 	QuestionAddTwoNumbers   QuestionName = "Add Two Numbers"
+	QuestionAddTwoNumbers2  QuestionName = "Add Two Numbers II"
 )
 
 // Param is the collection of all avaiable parameters
@@ -149,6 +150,7 @@ func registerQuestions(t *track.Track) map[QuestionName]questions.Questioner {
 	q[QuestionStringtoInteger] = &questions.StringToInteger{Track: t}
 	q[QuestionTwoSum] = &questions.TwoSum{Track: t}
 	q[QuestionAddTwoNumbers] = &questions.AddTwoNumbers{Track: t}
+	q[QuestionAddTwoNumbers2] = &questions.AddTwoNumbers2{Track: t}
 
 	return q
 }

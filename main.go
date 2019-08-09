@@ -18,6 +18,7 @@ const (
 	QuestionTwoSum          QuestionName = "Two Sum"
 	QuestionAddTwoNumbers   QuestionName = "Add Two Numbers"
 	QuestionAddTwoNumbers2  QuestionName = "Add Two Numbers II"
+	QuestionLSWRC           QuestionName = "Longest Substring Without Repeating Characters"
 )
 
 // Param is the collection of all avaiable parameters
@@ -151,6 +152,7 @@ func registerQuestions(t *track.Track) map[QuestionName]questions.Questioner {
 	q[QuestionTwoSum] = &questions.TwoSum{Track: t}
 	q[QuestionAddTwoNumbers] = &questions.AddTwoNumbers{Track: t}
 	q[QuestionAddTwoNumbers2] = &questions.AddTwoNumbers2{Track: t}
+	q[QuestionLSWRC] = &questions.LSWRC{Track: t}
 
 	return q
 }
